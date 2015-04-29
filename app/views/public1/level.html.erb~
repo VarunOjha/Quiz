@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>
+</title>
+</head>
+<body>
+<br/>
+<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+
+<% level_array = Array.new %>
+<% i = 0 %>
+<% @sub.each do |t| %>
+<% if t[0]['LEVEL']!='0' %>
+<%level_array[i]=t[0]['LEVEL'] %>
+<% end %>
+<% i+=1 %>
+<% end %>
+
+
+<br/>
+<% level_array.each do |t| %>
+<%= t %>
+<br/>
+<% end %>
+<br/>
+<%= level_array.count %>
+<% sum =0 %>
+Total Number of Questions in the Table <% sum=level_array[0].to_i + level_array[1].to_i + level_array[2].to_i %>
+<%= sum %>
+<div id="myfirstchart" style="height: 250px;"></div>
+<script>
+Morris.Donut({
+  element: 'myfirstchart',
+  data: [
+    {label: "Basic", value: <%= level_array[0] %> },
+    {label: "Intermediate", value:<%= level_array[1] %> },
+    {label: "Advanced", value: <%= level_array[2] %> }
+  ]
+});
+</script>
+
+
+<br/>
+
+<br/>
+<br/>
+<br/>
+
+</body>
+</html>

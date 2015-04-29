@@ -1,0 +1,66 @@
+<html>
+<head>
+<title> Question Level
+</title>
+</head>
+<body>
+<br/>
+<link rel="stylesheet" href="/home/varunojha/Documents/Sites/Quiz/app/assets/stylesheets/morris-0.4.3.min.css">
+<script src="/home/varunojha/Documents/Sites/Quiz/app/assets/javascripts/raphael-min.js"></script>
+<script src="/home/varunojha/Documents/Sites/Quiz/app/assets/javascripts/morris-0.4.3.min.js"></script>
+
+<% level_array = Array.new %>
+<% i = 0 %>
+<% @sub.each do |t| %>
+<% if t[0]['LEVEL']!='0' %> <!-- To avoid those questions who have level 0 -->
+<% level_array[i]=t[0]['LEVEL'] %>
+<% end %>
+<% i+=1 %>
+<% end %>
+
+
+<!-- To display contents of the level array -->
+<%# level_array.each do |t| %>
+<%# t %>
+<%# end %>
+
+
+<%level_array.count %>
+<% sum =0 %>
+Total Number of Questions in the Table <% sum=level_array[0].to_i + level_array[1].to_i + level_array[2].to_i %>
+<%= sum %>
+
+
+<p>
+Level 1 : <%= level_array[0] %>
+<br/>
+Level 2 : <%= level_array[1] %>
+<br/>
+Level 3 : <%= level_array[2] %>
+</p>
+
+<br/>
+
+
+<!-- MORRIS.JS -->
+<div id="myfirstchart" style="height: 250px;"></div>
+<script>
+Morris.Donut({
+  element: 'myfirstchart',
+  data: [
+    {label: "Basic", value: <%= level_array[0] %> },
+    {label: "Intermediate", value:<%= level_array[1] %> },
+    {label: "Advanced", value: <%= level_array[2] %> }
+  ]
+});
+</script>
+
+
+<br/>
+
+<br/>
+<br/>
+<br/>
+
+</body>
+</html>

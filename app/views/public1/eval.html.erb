@@ -1,0 +1,191 @@
+<html>
+<head>
+<title>
+</title>
+</head>
+<body>
+
+<link rel="stylesheet" href="/home/varunojha/Documents/Sites/Quiz/app/assets/stylesheets/simple.css">
+<script src="/home/varunojha/Documents/Sites/Quiz/app/assets/javascripts/knockout.simpleGrid.3.0.js"></script>
+<script src="/home/varunojha/Documents/Sites/Quiz/app/assets/javascripts/knockout-3.0.0.js"></script>
+
+<% i=1 %>
+<!-- A Hash that stores the topics, and the corresponding number of questions on them -->
+<% working_hash = Hash.new %>
+<% hash1 = Hash.new %>
+<% hash2 = Hash.new %>
+<% hash3 = Hash.new %>
+<% hash4 = Hash.new %>
+
+<% level = Array.new %>
+<% topic = Array.new %>
+<% entry = 0 %>
+
+
+<!-- This one is for level=1, all topics -->
+<% @hash1.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% hash1["#{i+100}"]=t[0]["#{i}"].to_i %>
+<% i+=1 %>
+<% end %>
+
+<!-- This one is for level=2, all topics -->
+<% i = 1%>
+<% @hash2.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% hash2["#{i+200}"]=t[0]["#{i}"].to_i %>
+<% i+=1 %>
+<% end %>
+
+<!-- This one is for level=3, all topics -->
+<% i=1 %>
+<% @hash3.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% hash3["#{i+300}"]=t[0]["#{i}"].to_i %>
+<% i+=1 %>
+<% end %>
+
+<!-- Names -->
+<% names = Hash.new %>
+<% i=1 %>
+<% a=0 %>
+<% @sub2.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% names["#{i}"]=t[0]["#{i}"] %>
+<% i+=1 %>
+<% end %>
+
+<% hash1 = hash1.sort_by { |key,value| value } %>
+<% hash1 = hash1.reverse %>
+<% hash2 = hash2.sort_by { |key,value| value } %>
+<% hash2 = hash2.reverse %>
+<% hash3 = hash3.sort_by { |key,value| value } %>
+<% hash3 = hash3.reverse %>
+<% hash4=hash1 %>
+<% hash4+=hash2 %>
+<% hash4+=hash3 %>
+<% hash4 = hash4.sort_by { |key,value| value } %>
+<% hash4 = hash4.reverse %>
+
+<% keys = Array.new %>
+<% j=0 %>
+<% values = Array.new %>
+<% k=0 %>
+<% variable = 20 %>
+<% hash4.each do |key, value| %>
+   <% if (j < variable) %> 
+   <% keys[j]= key.to_i %> <% values[k]=value %> <% j+=1 %> <% k+=1 %>
+   <% end %>
+<% end %>
+
+<% j=0 %>
+<% until j >= variable %>
+<% if (keys[j] > 100)  && (keys[j] < 200) then %>
+<% keys[j]=keys[j]-100 %>
+<% level[entry]="Basic" %>
+<% keys[j]=keys[j].to_s %>
+<% topic[entry]= names[keys[j]] %>
+<% entry+=1 %>
+<% keys[j]=keys[j].to_i %>
+<% end %>
+
+<% if (keys[j] > 200)  && (keys[j] < 300) then %>
+<% keys[j]=keys[j]-200 %>
+<% level[entry]="Intermediate" %>
+<% keys[j]=keys[j].to_s %>
+<% topic[entry]= names[keys[j]] %>
+<% entry+=1 %>
+<% keys[j]=keys[j].to_i %>
+<% end %>
+
+<% if (keys[j] >300)  && (keys[j] < 400) then %>
+<% keys[j]=keys[j]-300 %>
+<% level[entry]="Advanced" %>
+<% keys[j]=keys[j].to_s %>
+<% topic[entry]= names[keys[j]] %>
+<% entry+=1 %>
+<% keys[j]=keys[j].to_i %>
+<% end %>
+
+<% j+=1 %>
+<% end %>
+
+<% j=0 %>
+<% str=' ' %>
+<% until j >= 20 %>   
+<% str+="{ topic: "  + "'"+ topic[j].to_s + "'".to_s %>
+<% str+=", level: " + "'" + level[j].to_s + "'".to_s %>
+<% str+=", rank: ".to_s + "'".to_s + (j+1).to_s + "'"+  "},".to_s %>
+<% j+=1 %>
+<% end %>
+<% str+="{name: "  + "'"+ "Final" + "'" %>
+<% str+=", sales: " + "'" + "Final" + "'" %>
+<% str+=", price: " + "'" + "Final" +"'"+  "}" %>
+<% car=raw(str) %>
+<% car %>
+<div class='liveExample'> 
+    
+    <div data-bind='simpleGrid: gridViewModel'></div>
+     
+   <!-- <button data-bind='click: addItem'>
+        Add item
+    </button>
+    
+     
+    <button data-bind='click: sortByName'>
+        Sort by name
+    </button>
+     
+    <button data-bind='click: jumpToFirstPage, enable: gridViewModel.currentPageIndex'>
+        Jump to first page
+    </button> -->
+    
+</div>
+
+
+
+</body>
+<script type='text/javascript'>
+var initialData = [
+    <%= car %>
+];
+ 
+var PagedGridModel = function(items) {
+    this.items = ko.observableArray(items);
+ 
+   /* this.addItem = function() {
+        this.items.push({ name: "New item", sales: 0, price: 100 });
+    };
+ 
+    this.sortByName = function() {
+        this.items.sort(function(a, b) {
+            return a.name < b.name ? -1 : 1;
+        });
+    };
+ 
+    this.jumpToFirstPage = function() {
+        this.gridViewModel.currentPageIndex(0);
+    }; */
+ 
+    this.gridViewModel = new ko.simpleGrid.viewModel({
+        data: this.items,
+        columns: [
+            { headerText: "Rank", rowText: "rank" },           
+            { headerText: "Topic", rowText: "topic" },
+            { headerText: "Level", rowText: "level" }
+        ],
+        pageSize: 10
+    });
+};
+ko.applyBindings(new PagedGridModel(initialData));
+</script>
+</body>
+</html>

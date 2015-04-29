@@ -1,0 +1,177 @@
+<html>
+<head>
+</head>
+<script src="/home/varunojha/Documents/Sites/Quiz/app/assets/javascripts/raphael-min.js"></script>
+<link rel="stylesheet" href="/home/varunojha/Documents/Sites/Quiz/app/assets/stylesheets/morris-0.4.3.min.css">
+<script src="/home/varunojha/Documents/Sites/Quiz/app/assets/javascripts/morris-0.4.3.min.js"></script>
+<body>
+
+
+<% i=1 %>
+<!-- A Hash that stores the topics, and the corresponding number of questions on them -->
+<% working_hash = Hash.new %>
+<!-- The TWO MOST IMPORTANT arrays that we use here, both contain corresponding key and value -->
+<% keys =Array.new %>
+<% values = Array.new %>
+
+<% j=0 %>
+<% k=0 %>
+
+<!-- To create the working hash, that has all the keys(topic_numbers) and corresponding count(questions) -->
+<!--  topic_number => number of questions on that topic -->
+
+<% @sub.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% values[k] = working_hash["#{i}"]=t[0]["#{i}"] %>
+<% j+=1 %>
+<% keys[j]=i %>
+<% k+=1 %>
+<% i+=1 %>
+<% end %>
+
+<% a=0 %>
+<% i=1 %>
+
+<!-- Names of the topics -->
+<% names = Array.new %>
+
+<% @sub2.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% names[a]=t[0]["#{i}"] %>
+<% a+=1 %>
+<% i+=1 %>
+<% end %>
+
+
+
+
+<% working_hash1=Hash.new %>
+<% b=0 %>
+<% until b >= 7 %>
+  <% working_hash1["#{names[b]}"] = values[b] %>
+  <% b+=1 %>
+<% end %>
+
+
+
+<!-- The string is passed onto the data field in the MORRIS.JS -->
+<% str=' ' %>
+<% working_hash1.each do |key,value| %>   
+<% str+="{x: "  + "'"+ key + "'" + ", y: " + value + "}," %>
+<% end %>
+<% str += "{x: "+"'Final'".to_s+",y: 0}" %>
+<% car=raw(str) %>
+<% car %>
+
+
+<% working_hash2=Hash.new %>
+<% b=7 %>
+<% until b >= 14 %>
+  <% working_hash2["#{names[b]}"] = values[b] %>
+  <% b+=1 %>
+<% end %>
+
+
+
+<!-- The string is passed onto the data field in the MORRIS.JS -->
+<% str1=' ' %>
+<% working_hash2.each do |key,value| %>   
+<% str1+="{x: "  + "'"+ key + "'" + ", y: " + value + "}," %>
+<% end %>
+<% str1 += "{x: "+"'Final'".to_s+",y: 0}" %>
+<% car1=raw(str1) %>
+<% car1 %>
+
+
+<% working_hash3=Hash.new %>
+<% b=14 %>
+<% until b >= 21 %>
+  <% working_hash3["#{names[b]}"] = values[b] %>
+  <% b+=1 %>
+<% end %>
+
+
+
+<!-- The string is passed onto the data field in the MORRIS.JS -->
+<% str2=' ' %>
+<% working_hash3.each do |key,value| %>   
+<% str2+="{x: "  + "'"+ key + "'" + ", y: " + value + "}," %>
+<% end %>
+<% str2 += "{x: "+"'Final'".to_s+",y: 0}" %>
+<% car2=raw(str2) %>
+<% car2 %>
+
+<% working_hash4=Hash.new %>
+<% b=21 %>
+<% until b >= 28 %>
+  <% working_hash4["#{names[b]}"] = values[b] %>
+  <% b+=1 %>
+<% end %>
+
+
+
+<!-- The string is passed onto the data field in the MORRIS.JS -->
+<% str3=' ' %>
+<% working_hash4.each do |key,value| %>   
+<% str3+="{x: "  + "'"+ key + "'" + ", y: " + value + "}," %>
+<% end %>
+<% str3 += "{x: "+"'Final'".to_s+",y: 0}" %>
+<% car3=raw(str3) %>
+<% car3 %>
+
+<div id="graph"></div>
+<div id="graph1"></div>
+<div id="graph3"></div>
+<div id="graph4"></div>
+<pre id="code" class="prettyprint linenums">
+<script>
+
+Morris.Bar({
+element: 'graph',
+data: [<%= car %>
+],
+xkey: 'x',
+ykeys: ['y', 'z', 'a'],
+labels: ['Y', 'Z', 'A'],
+stacked: true
+
+});
+
+Morris.Bar({
+element: 'graph1',
+data: [<%= car1 %>
+],
+xkey: 'x',
+ykeys: ['y', 'z', 'a'],
+labels: ['Y', 'Z', 'A'],
+stacked: true
+});
+
+Morris.Bar({
+element: 'graph3',
+data: [<%= car2 %>
+],
+xkey: 'x',
+ykeys: ['y', 'z', 'a'],
+labels: ['Y', 'Z', 'A'],
+stacked: true
+
+});
+
+Morris.Bar({
+element: 'graph4',
+data: [<%= car3 %>
+],
+xkey: 'x',
+ykeys: ['y'],
+labels: ['Y'],
+
+});
+</script>
+</pre>
+</body>
+</html>

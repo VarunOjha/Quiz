@@ -1,0 +1,104 @@
+<html>
+<head>
+<title>
+</title>
+</head>
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="https://raw.github.com/DmitryBaranovskiy/raphael/300aa589f5a0ba7fce667cd62c7cdda0bd5ad904/raphael-min.js"></script>
+<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+<br/>
+
+<!-- This variable is for iterating through the array, passed on by the controller via model -->
+
+<% i=1 %>
+
+<!-- A Hash that stores the topics, and the corresponding number of questions on them -->
+<% working_hash = Hash.new %>
+
+<!-- To create the working hash, that has all the keys(topic_numbers) and corresponding count(questions) -->
+<!--  topic_number => number of questions on that topic -->
+ 
+<% @sub.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% working_hash["#{i}"]=t[0]["#{i}"].to_i %>
+<% i+=1 %>
+<% end %>
+
+<!-- The two arrays 'keys' and 'values' are used to store key => values for the top five results -->
+<% keys = Array.new %>
+<% j=0 %>
+<% values = Array.new %>
+<% k=0 %>
+<!-- The working hash is sorted by 'values' ( question_ count) and reversed -->
+
+<% working_hash = working_hash.sort_by { |key,value| value } %>
+<% working_hash = working_hash.reverse %>
+
+<% variable = 10 %>
+<% working_hash.each do |key, value| %>
+   <% if (j < variable) %> 
+   <% keys[j]= key %> <% values[k]=value %> <% j+=1 %> <% k+=1 %>
+   <% end %>
+<% end %>
+
+<% names = Hash.new %>
+<% i=1 %>
+<% a=0 %>
+<% @sub2.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% names["#{i}"]=t[0]["#{i}"] %>
+<% i+=1 %>
+<% end %>
+
+
+<% j=0 %>
+<% until j >= variable %>
+<%= names[keys[j]] %> : <%= values[j] %><br/>
+<% j+=1 %>
+<% end %>
+<br/>
+<br/>
+<% j=0 %>
+<% k=0 %>
+<% working_hash = working_hash.reverse %>
+
+<% variable = 10 %>
+<% working_hash.each do |key, value| %>
+   <% if (j < variable) %> 
+   <% keys[j]= key %> <% values[k]=value %> <% j+=1 %> <% k+=1 %>
+   <% end %>
+<% end %>
+
+<% names = Hash.new %>
+<% i=1 %>
+<% a=0 %>
+<% @sub2.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% names["#{i}"]=t[0]["#{i}"] %>
+<% i+=1 %>
+<% end %>
+
+
+<% j=0 %>
+<% until j >= variable %>
+<%= names[keys[j]] %> : <%= values[j] %><br/>
+<% j+=1 %>
+<% end %>
+
+
+
+
+
+
+</body>
+</html>

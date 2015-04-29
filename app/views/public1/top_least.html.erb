@@ -1,0 +1,189 @@
+<% variable = 20 %>
+<html>
+<head>
+<title>
+</title>
+</head>
+<body>
+<link rel="stylesheet" href="/home/varunojha/Documents/Sites/Quiz/app/assets/stylesheets/simple.css">
+<script src="/home/varunojha/Documents/Sites/Quiz/app/assets/javascripts/knockout.simpleGrid.3.0.js"></script>
+<script src="/home/varunojha/Documents/Sites/Quiz/app/assets/javascripts/knockout-3.0.0.js"></script>
+
+<% names = Hash.new %>
+<% i=1 %>
+<% a=0 %>
+<% @sub2.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% names["#{i}"]=t[0]["#{i}"] %>
+<% i+=1 %>
+<% end %>
+
+
+<% i=1 %> 
+<% count = Array.new %>
+<% topic = Array.new %>
+<% entry = 0 %>
+<% count1 = Array.new %>
+<% topic1 = Array.new %>
+
+<!-- A Hash that stores the topics, and the corresponding number of questions on them -->
+<% working_hash = Hash.new %>
+<% working_hash1 = Hash.new %>
+
+<!-- To create the working hash, that has all the keys(topic_numbers) and corresponding count(questions) -->
+<!--  topic_number => number of questions on that topic -->
+ 
+<% @sub.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% working_hash["#{i}"]=t[0]["#{i}"].to_i %>
+<% i+=1 %>
+<% end %>
+
+<!-- The two arrays 'keys' and 'values' are used to store key => values for the top five results -->
+<% keys = Array.new %>
+<% j=0 %>
+<% values = Array.new %>
+<% k=0 %>
+<!-- The working hash is sorted by 'values' ( question_ count) and reversed -->
+
+<% working_hash = working_hash.sort_by { |key,value| value } %>
+<%# working_hash = working_hash.reverse %>
+
+
+<% working_hash.each do |key, value| %>
+   <% if (j < variable) %> 
+   <% keys[j]= key %> <% values[k]=value %> <% j+=1 %> <% k+=1 %>
+   <% end %>
+<% end %>
+
+
+
+Top Topics :
+<% j=0 %>
+<% until j >= variable %>
+<% topic[entry]=names[keys[j]] %> <% count[entry]= values[j] %>
+<% j+=1 %>
+<% entry+=1 %>
+<% end %>
+<% j=0 %>
+<% str=' ' %>
+<% until j >= 20 %>   
+<% str+="{ topic: "  + "'"+ topic[j].to_s + "'".to_s %>
+<% str+=", level: " + "'" + count[j].to_s + "'".to_s %>
+<% str+=", rank: ".to_s + "'".to_s + (j+1).to_s + "'"+  "},".to_s %>
+<% j+=1 %>
+<% end %>
+<% str+="{name: "  + "'"+ "Final" + "'" %>
+<% str+=", sales: " + "'" + "Final" + "'" %>
+<% str+=", price: " + "'" + "Final" +"'"+  "}" %>
+<% car=raw(str) %>
+<% car %>
+
+<div class='liveExample'> 
+    
+    <div data-bind='simpleGrid: gridViewModel'></div>
+</div>
+
+
+
+<% j=0 %>
+<% k=0 %>
+<% working_hash = working_hash.reverse %>
+
+
+
+<% working_hash.each do |key, value| %>
+   <% if (j < variable) %> 
+   <% keys[j]= key %> <% values[k]=value %> <% j+=1 %> <% k+=1 %>
+   <% end %>
+<% end %>
+
+
+
+
+<% entry=0 %>
+<% j=0 %>
+<% until j >= variable %>
+<% topic1[entry]=names[keys[j]] %> <%count1[entry]= values[j] %>
+<% j+=1 %>
+<% entry+=1 %>
+<% end %>
+<% j=0 %>
+<% str1=' ' %>
+<% until j >= 20 %>   
+<% str1+="{ topic: "  + "'"+ topic1[j].to_s + "'".to_s %>
+<% str1+=", level: " + "'" + count1[j].to_s + "'".to_s %>
+<% str1+=", rank: ".to_s + "'".to_s + (j+1).to_s + "'"+  "},".to_s %>
+<% j+=1 %>
+<% end %>
+<% str1+="{name: "  + "'"+ "Final" + "'" %>
+<% str1+=", sales: " + "'" + "Final" + "'" %>
+<% str1+=", price: " + "'" + "Final" +"'"+  "}" %>
+<% car1=raw(str1) %>
+<% car1 %>
+
+
+
+<script type='text/javascript'>
+var initialData = [
+    <%= car %>
+];
+ 
+var PagedGridModel = function(items) {
+    this.items = ko.observableArray(items);
+ 
+  
+ 
+    this.gridViewModel = new ko.simpleGrid.viewModel({
+        data: this.items,
+        columns: [
+            { headerText: "Rank", rowText: "rank" },           
+            { headerText: "Topic", rowText: "topic" },
+            { headerText: "Level", rowText: "level" }
+        ],
+        pageSize: 10
+    });
+};
+
+
+var freshData = [
+    <%= car1 %>
+];
+ 
+var GridModel = function(items) {
+    this.items = ko.observableArray(items);
+ 
+   /* this.addItem = function() {
+        this.items.push({ name: "New item", sales: 0, price: 100 });
+    };
+ 
+    this.sortByName = function() {
+        this.items.sort(function(a, b) {
+            return a.name < b.name ? -1 : 1;
+        });
+    };
+ 
+    this.jumpToFirstPage = function() {
+        this.gridViewModel.currentPageIndex(0);
+    }; */
+ 
+    this.gridViewModel = new ko.simpleGrid.viewModel({
+        data: this.items,
+        columns: [
+            { headerText: "Rank", rowText: "rank" },           
+            { headerText: "Topic", rowText: "topic" },
+            { headerText: "Level", rowText: "level" }
+        ],
+        pageSize: 10
+    });
+};
+ko.applyBindings(new GridModel(freshData));
+ko.applyBindings(new PagedGridModel(initialData));
+
+</script>
+</body>
+</html>

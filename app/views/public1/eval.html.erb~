@@ -1,0 +1,134 @@
+<html>
+<head>
+<title>
+</title>
+</head>
+<body>
+
+<br/>
+<% i=1 %>
+<!-- A Hash that stores the topics, and the corresponding number of questions on them -->
+<% working_hash = Hash.new %>
+<% hash1 = Hash.new %>
+<% hash2 = Hash.new %>
+<% hash3 = Hash.new %>
+<% hash4 = Hash.new %>
+
+
+<br/>
+<!-- This one is for level=1, all topics -->
+<% @hash1.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<%= hash1["#{i+100}"]=t[0]["#{i}"].to_i %>
+<% i+=1 %>
+<% end %>
+<br/>
+<br/>
+<!-- This one is for level=2, all topics -->
+<% i = 1%>
+<% @hash2.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<%= hash2["#{i+200}"]=t[0]["#{i}"].to_i %>
+<% i+=1 %>
+<% end %>
+<br/>
+<br/>
+<!-- This one is for level=3, all topics -->
+<% i=1 %>
+<% @hash3.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<%= hash3["#{i+300}"]=t[0]["#{i}"].to_i %>
+<% i+=1 %>
+<% end %>
+<br/>
+<br/>
+<!-- Names -->
+<% names = Hash.new %>
+<% i=1 %>
+<% a=0 %>
+<% @sub2.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% names["#{i}"]=t[0]["#{i}"] %>
+<% i+=1 %>
+<% end %>
+
+<% hash1 = hash1.sort_by { |key,value| value } %>
+<% hash1 = hash1.reverse %>
+<% hash2 = hash2.sort_by { |key,value| value } %>
+<% hash2 = hash2.reverse %>
+<% hash3 = hash3.sort_by { |key,value| value } %>
+<% hash3 = hash3.reverse %>
+
+<% hash1.each do |key, value| %>
+   
+   <%key %> <% value %> <br/>
+  <% end %>
+
+<br/> <br/>
+<% hash2.each do |key, value| %>
+   
+   <% key %> <% value %> <br/>
+  <% end %>
+
+<br/> <br/>
+<% hash3.each do |key, value| %>
+   
+   <% key %> <% value %> <br/>
+  <% end %>
+
+<% hash4=hash1 %>
+<% hash4+=hash2 %>
+<% hash4+=hash3 %>
+<% hash4 = hash4.sort_by { |key,value| value } %>
+<% hash4 = hash4.reverse %>
+<% hash4.each do |key, value| %>
+   
+   <%= key %> : <%= value %> <br/>
+  <% end %>
+
+<% keys = Array.new %>
+<% j=0 %>
+<% values = Array.new %>
+<% k=0 %>
+<% variable = 10 %>
+<% hash4.each do |key, value| %>
+   <% if (j < variable) %> 
+   <% keys[j]= key.to_i %> <% values[k]=value %> <% j+=1 %> <% k+=1 %>
+   <% end %>
+<% end %>
+
+<% j=0 %>
+<% until j >= variable %>
+<% if (keys[j] > 100)  && (keys[j] < 200) then %>
+<% keys[j]=keys[j]-100 %> Level_1
+<% keys[j]=keys[j].to_s %>
+<%= names[keys[j]] %>
+<% keys[j]=keys[j].to_i %>
+<% end %>
+<br/>
+<% if (keys[j] > 200)  && (keys[j] < 300) then %>
+<% keys[j]=keys[j]-200 %> Level_2
+<% keys[j]=keys[j].to_s %>
+<%= names[keys[j]] %>
+<% keys[j]=keys[j].to_i %>
+<% end %>
+<br/>
+<% if (keys[j] >300)  && (keys[j] < 400) then %>
+<% keys[j]=keys[j]-300 %> Level_3
+<% keys[j]=keys[j].to_s %>
+<%= names[keys[j]] %>
+<% keys[j]=keys[j].to_i %>
+<% end %>
+<br/>
+<% j+=1 %>
+<% end %>
+</body>
+</html>

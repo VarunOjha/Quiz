@@ -1,0 +1,71 @@
+<html>
+<head>
+</head>
+<body>
+
+<!-- This variable is for iterating through the array, passed on by the controller via model -->
+<% i=1 %>
+
+<!-- A Hash that stores the topics, and the corresponding number of questions on them -->
+<% working_hash = Hash.new %>
+<% working_hash1 = Hash.new %>
+<% working_hash2 = Hash.new %>
+<% working_hash3 = Hash.new %>
+
+
+<!-- The TWO MOST IMPORTANT arrays that we use here, both contain corresponding key and value -->
+<% keys =Array.new %>
+<% count = Array.new %>
+
+<% j=0 %>
+<% k=0 %>
+
+<!-- To create the working hash, that has all the keys(topic_numbers) and corresponding count(questions) -->
+<!--  topic_number => number of questions on that topic -->
+
+<% @sub2.each do |t| %>
+<% if (t[0]["#{i}"] == nil) then %>
+<% i+=1 %>
+<% end %>
+<% working_hash["#{i}"]=t[0]["#{i}"] %>
+
+<% i+=1 %>
+<% j+=1 %>
+<% end %>
+
+<% i=1 %>
+
+<br/>
+<br/>
+Count:
+<br/>
+<% working_hash.each do |key, value| %>   
+  <% if (value!='0') then %>
+   <%= key %>  : <%= value %> 
+   <br/>
+<% end %>
+<% end %>
+<br/>
+Level:
+
+<% @sub.each do |t| %>
+<% if (t[0]["#{i}"] == nil) then %>
+<% i+=1 %>
+<% end %>
+<% working_hash1["#{i}"]=t[0]["#{i}"] %>
+<% i+=1 %>
+<% j+=1 %>
+
+<% end %>
+<% i=1 %>
+
+
+<% working_hash1.each do |key, value| %>   
+   <%= key %>  : <%= value %> 
+   <br/>
+<% end %>
+
+
+</body>
+</html>
+

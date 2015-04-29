@@ -1,0 +1,116 @@
+<html>
+<head>
+<title>
+</title>
+</head>
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="https://raw.github.com/DmitryBaranovskiy/raphael/300aa589f5a0ba7fce667cd62c7cdda0bd5ad904/raphael-min.js"></script>
+<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+<br/>
+<% i=1 %>
+<!-- A Hash that stores the topics, and the corresponding number of questions on them -->
+<% working_hash = Hash.new %>
+
+<!-- The TWO MOST IMPORTANT arrays that we use here, both contain corresponding key and value -->
+<% keys1 =Array.new %>
+<% values1 = Array.new %>
+<!-- For each Level -->
+<% keys2 =Array.new %>
+<% values2 = Array.new %>
+<!-- Yea, each level -->
+<% keys3 =Array.new %>
+<% values3 = Array.new %>
+
+
+<% j=0 %>
+<% k=0 %>
+<br/>
+<!-- This one is for level=1, all topics -->
+<% @hash1.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% values1[k] = working_hash["#{i}"]=t[0]["#{i}"] %>
+<% j+=1 %>
+<% keys1[j]=i %>
+<% k+=1 %>
+<% i+=1 %>
+<% end %>
+<br/>
+<br/>
+<!-- This one is for level=2, all topics -->
+<% i=1 %>
+<% j=0 %>
+<% k=0 %>
+<% @hash2.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% values2[k] = working_hash["#{i}"]=t[0]["#{i}"] %>
+<% j+=1 %>
+<% keys2[j]=i %>
+<% k+=1 %>
+<% i+=1 %>
+<% end %>
+<br/>
+<br/>
+<!-- This one is for level=3, all topics -->
+<% i=1 %>
+<% j=0 %>
+<% k=0 %>
+<% @hash3.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% values3[k] = working_hash["#{i}"]=t[0]["#{i}"] %>
+<% j+=1 %>
+<% keys3[j]=i %>
+<% k+=1 %>
+<% i+=1 %>
+<% end %>
+<!-- Names -->
+<% names = Array.new %>
+<% i=1 %>
+<% a=0 %>
+<% @sub2.each do |t| %>
+<% if i == 21 %>
+<% i =26 %>
+<% end %>
+<% names[a]=t[0]["#{i}"] %>
+<% a+=1 %>
+<% i+=1 %>
+
+<% end %>
+
+<% names.each do |m| %>
+<% m %>
+<% end %>
+<% str = ' ' %>
+<% j=0 %>
+<% until j >= 10 %>
+<% str+="{x: "  + "'"+ names[j] + "'" + ", y: " + values1[j] + ", z: " + values2[j] + ", a: " + values3[j] + "}," %>
+<% j+=1 %>
+<% end %>
+<% str += "{x: "+"'Final'".to_s+",y: 0}" %>
+<% car=raw(str) %>
+<% car %>
+<div id="graph"></div>
+<pre id="code" class="prettyprint linenums">
+<script>
+Morris.Bar({
+element: 'graph',
+data: [<%= car %>],
+xkey: 'x',
+ykeys: ['y', 'z', 'a'],
+labels: ['Y', 'Z', 'A'],
+stacked: true
+});
+</script>
+
+
+</body>
+</html>
